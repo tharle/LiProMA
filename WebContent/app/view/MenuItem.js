@@ -3,7 +3,6 @@ Ext.define('Liproma.view.MenuItem', {
     alias: 'widget.menuitem',
  
     border: 0,
-    autoScroll: true,
     title: '',
     rootVisible: false,
  

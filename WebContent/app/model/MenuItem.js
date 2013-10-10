@@ -23,10 +23,6 @@ Ext.define('Liproma.model.MenuItem', {
         {
             name: 'menu_id'
         }
-        ,
-        {
-        	name: 'referencia'
-        }
     ],
  
     belongsTo: {

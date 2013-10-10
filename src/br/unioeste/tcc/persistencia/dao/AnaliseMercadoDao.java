@@ -302,11 +302,11 @@ public class AnaliseMercadoDao extends PostgresDao {
     public void populateDto(AnaliseMercado entidadeBanco, ResultSet rs) throws SQLException {
         entidadeBanco.setId(rs.getLong(COLUMN_ID));
         entidadeBanco.setEstrategiaMercado(rs.getString(COLUMN_ESTRATEGIA_MERCADO));
-        entidadeBanco.setNecessidadeMercado(rs.getString(COLUMN_PERFIL_CLIENTE));
-        entidadeBanco.setConcorrencia(rs.getString(COLUMN_NECESSIDADE_MERCADO));
-        entidadeBanco.setTecnologiaDesenvolvimento(rs.getString(COLUMN_CONCORRENCIA));
-        entidadeBanco.setAmbienteComputacional(rs.getString(COLUMN_TECNOLOGIA_DESENVOLVIMENTO));
-        entidadeBanco.setPerfilCliente(rs.getString(COLUMN_AMBIENTE_COMPUTACIONAL));
+        entidadeBanco.setPerfilCliente(rs.getString(COLUMN_PERFIL_CLIENTE));
+        entidadeBanco.setNecessidadeMercado(rs.getString(COLUMN_NECESSIDADE_MERCADO));
+        entidadeBanco.setConcorrencia(rs.getString(COLUMN_CONCORRENCIA));
+        entidadeBanco.setTecnologiaDesenvolvimento(rs.getString(COLUMN_TECNOLOGIA_DESENVOLVIMENTO));
+        entidadeBanco.setAmbienteComputacional(rs.getString(COLUMN_AMBIENTE_COMPUTACIONAL));
         entidadeBanco.setNivelHabilidade(rs.getString(COLUMN_NIVEL_HABILIDADE));
         entidadeBanco.setRestricaoCultural(rs.getString(COLUMN_RESTRICAO_CULTURAL));
         entidadeBanco.setTempoEntrega(rs.getString(COLUMN_TEMPO_ENTREGA));

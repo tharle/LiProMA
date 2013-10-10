@@ -21,9 +21,11 @@ Ext.define('Liproma.view.Principal', {
 		collapsible : true
 	}, {
 		// Titulo
+		html: 'LiProMA',
+		id: 'PanelCabecalho',
 		xtype : 'panel',
 		region : 'north',
-		height : 0,
+		height : 40,
 		border : 0,
 	}, {
 		// Adicionar rodapé com os direitos

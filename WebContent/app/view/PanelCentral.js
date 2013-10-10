@@ -7,6 +7,6 @@ Ext.define('Liproma.view.PanelCentral', {
 	
 	items: [ {
         xtype: 'panel',
-        title: 'Home'
+        title: 'Início'
     }]
 });
