@@ -44,7 +44,7 @@ Ext.define('Liproma.controller.Menu', {
 		});
 	},
 	
-	//Seleção do item de menu
+	//Seleção do item de menu, ele abre de acordo com o data/menu.json.
 	onTreepanelSelect : function(selModel, record, index, options) {
 		// Ext.Msg.alert('You selected the following menu item',
 		// record.get('text'));
