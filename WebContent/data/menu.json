@@ -1,0 +1,49 @@
+{"items": 
+[
+	{
+		"title": "Cadastros",
+		"iconCls": "icon-grid",
+		"id": "1",
+		"items": [
+			{
+				"text": "Analise de Mercado",
+				"iconCls": "user_female",
+				"menu_id": "1",
+				"id": "11",
+				"className": "analisemercadogrid"
+			}
+		]
+	},
+	{
+		"title": "Menu 2",
+		"iconCls": "computer",
+		"id": "2",
+		"items": [
+			{
+				"text": "menu 2.1",
+				"iconCls": "chart_bar",
+				"menu_id": "2",
+				"id": "21"
+			},
+			{
+				"text": "menu 2.2",
+				"iconCls": "chart_curve",
+				"menu_id": "2",
+				"id": "22"
+			},
+			{
+				"text": "menu 2.3",
+				"iconCls": "chart_org",
+				"menu_id": "2",
+				"id": "23"
+			},
+			{
+				"text": "menu 2.4",
+				"iconCls": "chart_pie",
+				"menu_id": "2",
+				"id": "24"
+			}			
+		]
+	}	
+]
+}
