@@ -11,6 +11,13 @@
 				"menu_id": "1",
 				"id": "11",
 				"className": "analisemercadogrid"
+			},
+			{
+				"text": "Produto",
+				"iconCls": "user_female",
+				"menu_id": "1",
+				"id": "12",
+				"className": "produtogrid"
 			}
 		]
 	},

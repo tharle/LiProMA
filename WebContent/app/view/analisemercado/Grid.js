@@ -82,7 +82,11 @@ Ext.define('Liproma.view.analisemercado.Grid', {
 				iconCls : 'icon-delete',
 				text : 'Excluir',
 				action : 'delete'
-			} ]
+			}, {
+				iconCls : 'icon-edit',
+				text : 'Editar',
+				action : 'edit'
+			}  ]
 		}, {
 			xtype : 'pagingtoolbar',
 			dock : 'top',

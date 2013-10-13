@@ -1,0 +1,20 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping.dtd">  
+<hibernate-mapping>  
+    <class name="br.unioeste.liproma.model.entidade.AnaliseMercado" table="analise_mercado">  
+        <id name="id" column="id" type="long">  
+            <generator class="native"/>  
+        </id>  
+        <property name="estrategiaMercado" column="estrategia_mercado" type="string"/>  
+        <property name="necessidadeMercado" column="necessidade_mercado" type="string"/>
+        <property name="concorrencia" column="concorrencia" type="string"/>
+        <property name="tecnologiaDesenvolvimento" column="tecnologia_desenvolvimento" type="string"/>
+        <property name="ambienteComputacional" column="ambiente_computacional" type="string"/>  
+        <property name="perfilCliente" column="perfil_cliente" type="string"/>
+        <property name="nivelHabilidade" column="nivel_habilidade" type="string"/>  
+        <property name="restricaoCultural" column="restricao_cultural" type="string"/>
+        <property name="tempoEntrega" column="tempo_entrega" type="string"/>  
+        <property name="objetivoNegocio" column="objetivo_negocio" type="string"/>
+        <property name="objetivoReuso" column="objetivo_reuso" type="string"/>  
+    </class>  
+</hibernate-mapping> 

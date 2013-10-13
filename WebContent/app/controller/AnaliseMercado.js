@@ -26,8 +26,12 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 			'analisemercadogrid button[action=delete]' : {
 				click : this.deletarAnaliseMercado
 			},
-			'analisemercadogrid button[action=save]' : {
-				click : this.atualizarAnaliseMercado
+
+			'analisemercadogrid button[action=edit]' : {
+				click : this.editarAnaliseMercadoButton
+			},
+			'analisemercadoform button[action=save]' : {
+				click : this.atualizarAnaliseMercadoForm
 			}
 		});
 	},
@@ -39,9 +43,21 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		}
 	},
 
-	atualizarAnaliseMercado : function(button) {
-		var win = button.up('window'), form = win.down('form'), record = form
-				.getRecord(), values = form.getValues();
+	editarAnaliseMercadoButton : function(button) {
+		var grid = this.getAnaliseMercadoGrid();
+		var record = grid.getSelectionModel().getSelection();
+
+		var edit = Ext.create('Liproma.view.analisemercado.Formulario').show();
+		if (record && record.getData) {
+			edit.down('form').loadRecord(record);
+		}
+	},
+
+	atualizarAnaliseMercadoForm : function(button) {
+		var win = button.up('window');
+		var form = win.down('form');
+		var record = form.getRecord();
+		var values = form.getValues();
 
 		var novo = false;
 
@@ -62,15 +78,15 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		}
 	},
 
-	deletarContato : function(button) {
-		var grid = this.getAnaliseMercadoGrid(), record = grid
-				.getSelectionModel().getSelection(), store = this
-				.getAnaliseMercadoStore();
-		
+	deletarAnaliseMercado : function(button) {
+		var grid = this.getAnaliseMercadoGrid();
+		var record = grid.getSelectionModel().getSelection();
+		var store = this.getAnaliseMercadoStore();
+
 		store.remove(record);
 		this.getAnaliseMercadoStore().sync();
-		
-		//faz reload para atualizar
+
+		// faz reload para atualizar
 		this.getAnaliseMercadoStore().load();
 	}
 });

@@ -4,6 +4,6 @@ Ext.Loader.setConfig({
 
 Ext.application({
 	name : 'Liproma',
-	controllers : ['Menu','AnaliseMercado'],
+	controllers : ['Menu','AnaliseMercado', 'Produto'],
 	autoCreateViewport : true
 });
