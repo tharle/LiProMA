@@ -16,9 +16,11 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 	} ],
 
 	init : function() {
+		var ultimoItemSelecionado;
 		this.control({
 			'analisemercadogrid dataview' : {
-				itemdblclick : this.editarAnaliseMercado
+				itemdblclick : this.editarAnaliseMercado,
+				itemclick: this.alterandoItensGrid
 			},
 			'analisemercadogrid button[action=add]' : {
 				click : this.editarAnaliseMercado
@@ -33,6 +35,7 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 			'analisemercadoform button[action=save]' : {
 				click : this.atualizarAnaliseMercadoForm
 			}
+
 		});
 	},
 
@@ -40,6 +43,7 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		var edit = Ext.create('Liproma.view.analisemercado.Formulario').show();
 		if (record && record.getData) {
 			edit.down('form').loadRecord(record);
+			// edit.down('form').up('panel').down('multiselect').store = define;
 		}
 	},
 
@@ -59,8 +63,6 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		var record = form.getRecord();
 		var values = form.getValues();
 
-		var novo = false;
-
 		if (values.id > 0) {
 			record.set(values);
 		} else {
@@ -73,20 +75,35 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		win.close();
 		this.getAnaliseMercadoStore().sync();
 
-		if (novo) {// faz reload para atualizar
-			this.getAnaliseMercadoStore().load();
-		}
+		// if (novo) {// faz reload para atualizar
+		// this.getAnaliseMercadoStore().load();
+		// }
 	},
 
 	deletarAnaliseMercado : function(button) {
 		var grid = this.getAnaliseMercadoGrid();
 		var record = grid.getSelectionModel().getSelection();
 		var store = this.getAnaliseMercadoStore();
+		var me = this;
 
-		store.remove(record);
-		this.getAnaliseMercadoStore().sync();
+		Ext.MessageBox.confirm('Confirmação',
+				'Quer mesmo deletar a Análise de Mercado?', function(btn) {
+					if (btn == 'yes') {
+						store.remove(record);
+						me.getAnaliseMercadoStore().sync();
 
-		// faz reload para atualizar
-		this.getAnaliseMercadoStore().load();
+						// faz reload para atualizar
+						// me.getAnaliseMercadoStore().load();
+						Ext.MessageBox.alert('Mensagem',
+								'Registro deletado com sucesso!');
+					}
+				});
+
+	},
+	
+	alterandoItensGrid: function(grid, record, item, index){
+		var itemSelecionado = grid.getStore().getAt(index);
+		 //Ext.ComponentQuery.query('analisemercadoform #cityCombo')[0]
+		//Ext.Msg.alert('Status', 'Changes saved successfully.');
 	}
 });

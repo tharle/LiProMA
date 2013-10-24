@@ -1,0 +1,11 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping.dtd">  
+<hibernate-mapping>  
+    <class name="br.unioeste.liproma.model.entidade.DominioAnaliseMercado" table="dominio_analise_mercado">  
+        <id name="id" column="id" type="long">  
+            <generator class="native"/>  
+        </id>  
+        <property name="idAnaliseMercado" column="id_analise_mercado" type="long"/>  
+        <property name="idDominio" column="id_dominio" type="long"/>  
+    </class>  
+</hibernate-mapping> 

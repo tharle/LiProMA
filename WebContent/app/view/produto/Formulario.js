@@ -26,7 +26,20 @@ Ext.define('Liproma.view.produto.Formulario', {
 				labelAlign : 'top',
 			},
 
-			items : [ {
+			items : [  {
+				anchor : '100%',
+				xtype : 'multiselect',
+				msgTarget : 'side',
+				fieldLabel : 'Features',
+				name : 'dominiosmultproduto',
+				id : 'dominiosmultproduto',
+				allowBlank : false,
+				store : Ext.create('Liproma.store.MultiSelectFeature'),
+				displayField : 'text',
+				valueField : 'value',
+				value : [ '1', '2' ],
+				ddReorder : true
+			},{
 				xtype : 'textfield',
 				name : 'id',
 				fieldLabel : 'id',

@@ -2,7 +2,7 @@ package br.unioeste.liproma.view.produto;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,25 +10,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
-import br.unioeste.liproma.model.entidade.AnaliseMercado;
-import br.unioeste.liproma.persistencia.dao.AnaliseMercadoDao;
-import br.unioeste.liproma.persistencia.factory.AbstractDaoFactory;
+import br.unioeste.liproma.controller.ProdutoController;
+import br.unioeste.liproma.model.entidade.Produto;
+
+import com.google.gson.Gson;
 
 /**
- * Servlet implementation class AnaliseMercadoServlet
+ * Servlet implementation class ProdutoServlet
  */
-@WebServlet("/AtualizarProduto.frm")
+@WebServlet("/AtualizarProduto.form")
 public class AtualizarProdutoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	ProdutoController controlador;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public AtualizarProdutoServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+		controlador = new ProdutoController();
 	}
 
 	/**
@@ -43,25 +45,34 @@ public class AtualizarProdutoServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/json");
+		PrintWriter out = response.getWriter();
+		JSONObject result = new JSONObject();
 		try {
-			request.getSession();
 			BufferedReader rd = request.getReader();
 			String linha = "";
-			AnaliseMercadoDao dao = AbstractDaoFactory.getDaoFactory()
-					.getAnaliseMercadoDao();
-			while ((linha = rd.readLine()) != null) {
-				System.out.println(linha);
-				AnaliseMercado analiseMercado = new AnaliseMercado();
-				org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
-				
-				analiseMercado.processJsonObject((org.json.JSONObject)jsonObj.get("analiseMercados"));
-				dao.update(analiseMercado);
-			}
+			linha = rd.readLine();
+			Produto produto = new Produto();
+			org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
+			
+			produto.processJsonObject(
+					(org.json.JSONObject) jsonObj.get("produtos"),false);
+			controlador.gravar(produto, false);
+
+			Gson gson = new Gson();
+			result.put("sucess", true);
+			out.println(gson.toJson(result));
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Gson gson = new Gson();
+			result.put("sucess", false);
+			out.println(gson.toJson(result));
+		} finally {
+			out.flush();
+			out.close();
 		}
 	}
 

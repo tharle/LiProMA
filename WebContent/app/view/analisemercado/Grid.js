@@ -10,6 +10,13 @@ Ext.define('Liproma.view.analisemercado.Grid', {
 	renderTo : Ext.getBody(),
 
 	columns : [ {
+		header : 'DOMINIOS',
+		width : 170,
+		flex : 1,
+		dataIndex : 'dominioNomes',
+		// dataIndex : 'value'
+		valueField : 'descricao'
+	}, {
 		header : 'ESTRATEGIAS DE MARKETING',
 		width : 170,
 		flex : 1,
@@ -86,7 +93,7 @@ Ext.define('Liproma.view.analisemercado.Grid', {
 				iconCls : 'icon-edit',
 				text : 'Editar',
 				action : 'edit'
-			}  ]
+			} ]
 		}, {
 			xtype : 'pagingtoolbar',
 			dock : 'top',

@@ -10,6 +10,11 @@ Ext.define('Liproma.view.produto.Grid', {
 	renderTo : Ext.getBody(),
 
 	columns : [ {
+		header : 'DOMINIOS',
+		width : 170,
+		flex : 1,
+		dataIndex : 'dominios'
+	}, {
 		header : 'NOME',
 		width : 170,
 		flex : 1,
@@ -19,7 +24,7 @@ Ext.define('Liproma.view.produto.Grid', {
 		width : 170,
 		flex : 1,
 		dataIndex : 'descricao'
-	}],
+	} ],
 
 	initComponent : function() {
 		this.dockedItems = [ {
@@ -36,7 +41,7 @@ Ext.define('Liproma.view.produto.Grid', {
 				iconCls : 'icon-edit',
 				text : 'Editar',
 				action : 'edit'
-			}  ]
+			} ]
 		}, {
 			xtype : 'pagingtoolbar',
 			dock : 'top',

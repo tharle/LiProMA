@@ -7,49 +7,77 @@
 		"items": [
 			{
 				"text": "Analise de Mercado",
-				"iconCls": "user_female",
 				"menu_id": "1",
 				"id": "11",
 				"className": "analisemercadogrid"
 			},
 			{
-				"text": "Produto",
-				"iconCls": "user_female",
+				"text": "Mapa de Produto",
 				"menu_id": "1",
 				"id": "12",
 				"className": "produtogrid"
+			},
+			{
+				"text": "Dominio",
+				"menu_id": "1",
+				"id": "13",
+				"className": "dominiogrid"
+			},
+			{
+				"text": "Feature",
+				"menu_id": "1",
+				"id": "14",
+				"className": "featuregrid"
+			},
+			{
+				"text": "Criterio de Potencial de Uso",
+				"menu_id": "1",
+				"id": "15",
 			}
 		]
 	},
 	{
-		"title": "Menu 2",
+		"title": "Scrum",
 		"iconCls": "computer",
 		"id": "2",
 		"items": [
 			{
-				"text": "menu 2.1",
+				"text": "Backlog de Escopo",
 				"iconCls": "chart_bar",
 				"menu_id": "2",
-				"id": "21"
-			},
-			{
-				"text": "menu 2.2",
-				"iconCls": "chart_curve",
+				"id": "21",
+				"className": "backlogescopogrid"
+			}, {
+				"text": "Backlog de Sprint",
+				"iconCls": "chart_bar",
 				"menu_id": "2",
-				"id": "22"
-			},
-			{
-				"text": "menu 2.3",
-				"iconCls": "chart_org",
+				"id": "22",
+				"className": "backlogsprintgrid"
+			}, {
+				"text": "Responsavel",
+				"iconCls": "chart_bar",
 				"menu_id": "2",
-				"id": "23"
-			},
+				"id": "23",
+			}	
+		]
+	},
+	{
+		"title": "Graficos",
+		"iconCls": "computer",
+		"id": "3",
+		"items": [
 			{
-				"text": "menu 2.4",
-				"iconCls": "chart_pie",
-				"menu_id": "2",
-				"id": "24"
-			}			
+				"text": "Feature x Feature",
+				"iconCls": "chart_bar",
+				"menu_id": "3",
+				"id": "31",
+				"className": "featurexfeaturetela"
+			}, {
+				"text": "Produto x Feature",
+				"iconCls": "chart_bar",
+				"menu_id": "3",
+				"id": "32",
+			}	
 		]
 	}	
 ]

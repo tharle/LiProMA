@@ -12,6 +12,7 @@ Ext.define('Liproma.model.AnaliseMercado', {
 		'restricaoCultural',
 		'tempoEntrega',
 		'objetivoNegocio',
-		'objetivoReuso'
+		'objetivoReuso',
+		'dominioNomes'
 	]
 });

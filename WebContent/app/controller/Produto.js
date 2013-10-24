@@ -59,7 +59,6 @@ Ext.define('Liproma.controller.Produto', {
 		var record = form.getRecord();
 		var values = form.getValues();
 
-		var novo = false;
 
 		if (values.id > 0) {
 			record.set(values);
@@ -73,20 +72,28 @@ Ext.define('Liproma.controller.Produto', {
 		win.close();
 		this.getProdutoStore().sync();
 
-		if (novo) {// faz reload para atualizar
-			this.getProdutoStore().load();
-		}
+//		if (novo) {// faz reload para atualizar
+//			this.getProdutoStore().load();
+//		}
 	},
 
 	deletarProduto : function(button) {
 		var grid = this.getProdutoGrid();
 		var record = grid.getSelectionModel().getSelection();
 		var store = this.getProdutoStore();
+		var me = this;
 
-		store.remove(record);
-		this.getProdutoStore().sync();
+		Ext.MessageBox.confirm('Confirmação',
+				'Quer mesmo deletar o Produto ?', function(btn) {
+					if (btn == 'yes') {
+						store.remove(record);
+						me.getProdutoStore().sync();
 
-		// faz reload para atualizar
-		this.getProdutoStore().load();
+						//  faz reload para atualizar
+						//me.getAnaliseMercadoStore().load();
+						Ext.MessageBox.alert('Mensagem',
+								'Produto deletado com sucesso!');
+					}
+				});
 	}
 });

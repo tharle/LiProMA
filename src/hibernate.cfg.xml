@@ -17,7 +17,10 @@
 		<property name="hibernate.show_sql">false</property>
 
 		<!-- mapping files -->
-		<mapping resource="Produto.hbm.xml" />
-		<mapping resource="AnaliseMercado.hbm.xml" />
+		<mapping resource="mapeamento/Produto.hbm.xml" />
+		<mapping resource="mapeamento/AnaliseMercado.hbm.xml" />
+		<mapping resource="mapeamento/Dominio.hbm.xml" />
+		<mapping resource="mapeamento/DominioAnaliseMercado.hbm.xml" />
+		<mapping resource="mapeamento/Feature.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

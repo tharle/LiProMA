@@ -1,6 +1,7 @@
 package br.unioeste.liproma.model.entidade;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -25,6 +26,8 @@ public class AnaliseMercado implements IEntidade{
 	private String tempoEntrega;
 	private String objetivoNegocio;
 	private String objetivoReuso;
+	private List<Dominio> dominios;
+	private String dominioNomes;
 
 	public AnaliseMercado() {
 		this.id = 0l;
@@ -39,6 +42,7 @@ public class AnaliseMercado implements IEntidade{
 		this.tempoEntrega = "";
 		this.objetivoNegocio = "";
 		this.objetivoReuso = "";
+		this.dominioNomes = "";
 	}
 
 	public AnaliseMercado(long id, String estrategiaMercado,
@@ -157,6 +161,23 @@ public class AnaliseMercado implements IEntidade{
 		this.objetivoReuso = objetivoReuso;
 	}
 	
+	public String getDominioNomes() {
+		return dominioNomes;
+	}
+
+	public void setDominioNomes(String dominioNomes) {
+		this.dominioNomes = dominioNomes;
+	}
+
+	public List<Dominio> getDominiosList() {
+		return dominios;
+	}
+
+	public void setDominios(List<Dominio> dominios) {
+		this.dominios = dominios;
+		this.dominioNomes = toStringDominios();
+	}
+	
 	public Map<String, String> toMap(){
 		HashMap<String, String> map = new HashMap<>();
 		
@@ -172,16 +193,26 @@ public class AnaliseMercado implements IEntidade{
 		map.put("tempoEntrega",this.tempoEntrega);
 		map.put("objetivoNegocio",this.objetivoNegocio);
 		map.put("objetivoReuso",this.objetivoReuso);
+		//map.put("dominios", toStringDominios());
 		
 		
 		return map;
 	}
 
-	public void processJsonObject(JSONObject jsonObj) {
+	private String toStringDominios() {
+		StringBuilder sb = new StringBuilder("[");
+		for (Dominio d : dominios) {
+			sb.append(d.getNome());
+			sb.append(",");
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+
+	public void processJsonObject(JSONObject jsonObj, boolean novo) {
 		
 		try {
-			
-			this.id = jsonObj.getLong("id");
+			this.id = novo? 0l:jsonObj.getLong("id");
 			this.estrategiaMarketing = jsonObj.getString("estrategiaMarketing");
 			this.necessidadeMercado = jsonObj.getString("necessidadeMercado");
 			this.concorrencia = jsonObj.getString("concorrencia");
@@ -198,4 +229,6 @@ public class AnaliseMercado implements IEntidade{
 			e.printStackTrace();
 		}
 	}
+
+	
 }

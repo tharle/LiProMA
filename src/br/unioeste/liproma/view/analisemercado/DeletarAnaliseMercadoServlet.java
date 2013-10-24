@@ -1,6 +1,8 @@
 package br.unioeste.liproma.view.analisemercado;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,23 +11,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
-import br.unioeste.liproma.persistencia.dao.AnaliseMercadoDao;
-import br.unioeste.liproma.persistencia.factory.AbstractDaoFactory;
+import com.google.gson.Gson;
+
+import br.unioeste.liproma.controller.AnaliseMercadoController;
+import br.unioeste.liproma.model.entidade.AnaliseMercado;
+import br.unioeste.liproma.store.dao.AnaliseMercadoDao;
+import br.unioeste.liproma.store.factory.AbstractDaoFactory;
 /**
  * Servlet implementation class AnaliseMercadoServlet
  */
-@WebServlet("/DeletarAnaliseMercado.frm")
+@WebServlet("/DeletarAnaliseMercado.form")
 public class DeletarAnaliseMercadoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	AnaliseMercadoController controlador;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public DeletarAnaliseMercadoServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        controlador = new AnaliseMercadoController();
     }
 
 	/**
@@ -45,19 +52,25 @@ public class DeletarAnaliseMercadoServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void doRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/json");
+		PrintWriter out = response.getWriter();
 		JSONObject result = new JSONObject();
 		try {
+			BufferedReader rd = request.getReader();
+			String linha = "";
+			linha = rd.readLine();
+			AnaliseMercado analiseMercado = new AnaliseMercado();
+			org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
+			
+			analiseMercado.processJsonObject(
+					(org.json.JSONObject) jsonObj.get("analiseMercados"), false);
+			controlador.excluir(analiseMercado);
 
-			AnaliseMercadoDao dao = AbstractDaoFactory.getDaoFactory().getAnaliseMercadoDao();
-			//dao.delete(analiseMercado.getId());
+			Gson gson = new Gson();
 			result.put("sucess", true);
+			out.println(gson.toJson(result));
 		} catch (Exception e) {
-			try {
 				result.put("sucess", false);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 		}
 	}
