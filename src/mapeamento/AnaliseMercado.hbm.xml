@@ -1,10 +1,13 @@
 <?xml version="1.0"?>  
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping.dtd">  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">  
 <hibernate-mapping>  
     <class name="br.unioeste.liproma.model.entidade.AnaliseMercado" table="analise_mercado">  
         <id name="id" column="id" type="long">  
             <generator class="native"/>  
-        </id>  
+        </id>
+       
         <property name="estrategiaMercado" column="estrategia_mercado" type="string"/>  
         <property name="necessidadeMercado" column="necessidade_mercado" type="string"/>
         <property name="concorrencia" column="concorrencia" type="string"/>
@@ -16,5 +19,6 @@
         <property name="tempoEntrega" column="tempo_entrega" type="string"/>  
         <property name="objetivoNegocio" column="objetivo_negocio" type="string"/>
         <property name="objetivoReuso" column="objetivo_reuso" type="string"/>  
-    </class>  
+	    
+    </class>
 </hibernate-mapping> 

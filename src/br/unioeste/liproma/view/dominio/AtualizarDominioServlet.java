@@ -15,8 +15,6 @@ import org.json.simple.JSONObject;
 import br.unioeste.liproma.controller.DominioController;
 import br.unioeste.liproma.model.entidade.Dominio;
 
-import com.google.gson.Gson;
-
 /**
  * Servlet implementation class DominioServlet
  */
@@ -58,18 +56,16 @@ public class AtualizarDominioServlet extends HttpServlet {
 			Dominio dominio = new Dominio();
 			org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
 			
-			dominio.processJsonObject(
+			dominio.fromJsonObject(
 					(org.json.JSONObject) jsonObj.get("dominios"),false);
 			controlador.gravar(dominio, false);
 
-			Gson gson = new Gson();
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
+			out.println(result);
 
 		} catch (Exception e) {
-			Gson gson = new Gson();
 			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 		} finally {
 			out.flush();
 			out.close();

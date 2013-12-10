@@ -8,6 +8,7 @@ Ext.define('Liproma.view.analisemercado.Grid', {
 	title : 'Análise de Mercado',
 	store : 'AnaliseMercado',
 	renderTo : Ext.getBody(),
+id: 'analisemercadogridid',
 
 	columns : [ {
 		header : 'DOMINIOS',

@@ -1,24 +1,24 @@
 package br.unioeste.liproma.model.entidade;
 
-import java.util.Map;
+import javax.persistence.Entity;
 
 import org.json.JSONObject;
-
+@Entity
 public class DominioAnaliseMercado implements IEntidade {
 	private Long id;
-	private Long idAnaliseMercado;
-	private Long idDominio;
+	private Dominio dominio;
+	private AnaliseMercado analiseMercado;
 
 	public DominioAnaliseMercado() {
 		this.id = 0l;
-		this.idAnaliseMercado = 0l;
-		this.idDominio = 0l;
+		dominio = new Dominio();
+		analiseMercado = new AnaliseMercado();
 	}
 
-	public DominioAnaliseMercado(Long id, Long analiseMercado, Long dominio) {
+	public DominioAnaliseMercado(Long id, AnaliseMercado analiseMercado, Dominio dominio) {
 		this.id = id;
-		this.idAnaliseMercado = analiseMercado;
-		this.idDominio = dominio;
+		this.analiseMercado = analiseMercado;
+		this.dominio = dominio;
 	}
 
 	@Override
@@ -30,32 +30,33 @@ public class DominioAnaliseMercado implements IEntidade {
 		this.id = id;
 	}
 
-	public Long getIdAnaliseMercado() {
-		return idAnaliseMercado;
+
+	@Override
+	public void fromJsonObject(JSONObject jsonObject, boolean novo) {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void setIdAnaliseMercado(Long analiseMercado) {
-		this.idAnaliseMercado = analiseMercado;
+	public Dominio getDominio() {
+		return dominio;
 	}
 
-	public Long getIdDominio() {
-		return idDominio;
-	}
-
-	public void setIdDominio(Long dominio) {
-		this.idDominio = dominio;
+	public void setDominio(Dominio dominio) {
+		this.dominio = dominio;
 	}
 
 	@Override
-	public Map<String, String> toMap() {
+	public JSONObject toJsonObject() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public void processJsonObject(JSONObject jsonObject, boolean novo) {
-		// TODO Auto-generated method stub
+	public AnaliseMercado getAnaliseMercado() {
+		return analiseMercado;
+	}
 
+	public void setAnaliseMercado(AnaliseMercado analiseMercado) {
+		this.analiseMercado = analiseMercado;
 	}
 
 }

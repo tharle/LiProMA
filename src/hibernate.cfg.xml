@@ -8,19 +8,36 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.connection.password">postgres</property>
 		<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
-<!-- 
-		thread is the short name for org.hibernate.context.ThreadLocalSessionContext 
-			and let Hibernate bind the session automatically to the thread
-		<property name="current_session_context_class">thread</property> -->
+		<!-- thread is the short name for org.hibernate.context.ThreadLocalSessionContext 
+			and let Hibernate bind the session automatically to the thread <property 
+			name="current_session_context_class">thread</property> -->
 
 		<!-- this will show us all sql statements -->
-		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.show_sql">true</property>
 
-		<!-- mapping files -->
-		<mapping resource="mapeamento/Produto.hbm.xml" />
+
+
 		<mapping resource="mapeamento/AnaliseMercado.hbm.xml" />
+		<mapping resource="mapeamento/BacklogEscopo.hbm.xml" />
+		<mapping resource="mapeamento/BacklogEscopoDominio.hbm.xml" />
+		<mapping resource="mapeamento/BacklogSprint.hbm.xml" />
+		<mapping resource="mapeamento/BacklogSprintFeatureBacklogEscopo.hbm.xml" />
+		<mapping resource="mapeamento/BacklogSprintResponsavel.hbm.xml" />
+		<mapping resource="mapeamento/Criterio.hbm.xml" />
 		<mapping resource="mapeamento/Dominio.hbm.xml" />
 		<mapping resource="mapeamento/DominioAnaliseMercado.hbm.xml" />
 		<mapping resource="mapeamento/Feature.hbm.xml" />
+		<mapping resource="mapeamento/FeatureCriterio.hbm.xml" />
+		<mapping resource="mapeamento/FeatureDominio.hbm.xml" />
+		<mapping resource="mapeamento/FeatureProduto.hbm.xml" />
+		<mapping resource="mapeamento/FeatureBacklogEscopo.hbm.xml" />
+		<mapping resource="mapeamento/Produto.hbm.xml" />
+		<mapping resource="mapeamento/ProdutoDominio.hbm.xml" />
+		<mapping resource="mapeamento/Responsavel.hbm.xml" />
+		<mapping resource="mapeamento/Tarefa.hbm.xml" />
+		<mapping resource="mapeamento/TarefaResponsavel.hbm.xml" />
+		
+		<mapping resource="mapeamento/FeatureBacklogSprint.hbm.xml" />
+
 	</session-factory>
 </hibernate-configuration>

@@ -58,6 +58,7 @@ Ext.define('Liproma.controller.Dominio', {
 		var form = win.down('form');
 		var record = form.getRecord();
 		var values = form.getValues();
+		var novo = false;
 
 
 		if (values.id > 0) {
@@ -72,9 +73,9 @@ Ext.define('Liproma.controller.Dominio', {
 		win.close();
 		this.getDominioStore().sync();
 
-//		if (novo) {// faz reload para atualizar
-//			this.getDominioStore().load();
-//		}
+		if (novo) {// faz reload para atualizar
+			this.getDominioStore().load();
+		}
 	},
 
 	deletarDominio : function(button) {

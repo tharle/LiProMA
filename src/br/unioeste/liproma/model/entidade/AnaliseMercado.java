@@ -1,19 +1,19 @@
 package br.unioeste.liproma.model.entidade;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Entity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
 @Entity
-public class AnaliseMercado implements IEntidade{
+public class AnaliseMercado implements IEntidade {
 	private Long id;
 	private String estrategiaMarketing;
 	private String necessidadeMercado;
@@ -26,7 +26,7 @@ public class AnaliseMercado implements IEntidade{
 	private String tempoEntrega;
 	private String objetivoNegocio;
 	private String objetivoReuso;
-	private List<Dominio> dominios;
+	private Set<Dominio> dominios;
 	private String dominioNomes;
 
 	public AnaliseMercado() {
@@ -43,6 +43,7 @@ public class AnaliseMercado implements IEntidade{
 		this.objetivoNegocio = "";
 		this.objetivoReuso = "";
 		this.dominioNomes = "";
+		dominios = new HashSet<>();
 	}
 
 	public AnaliseMercado(long id, String estrategiaMercado,
@@ -63,6 +64,7 @@ public class AnaliseMercado implements IEntidade{
 		this.tempoEntrega = tempoEntrega;
 		this.objetivoNegocio = objetivoNegocio;
 		this.objetivoReuso = objetivoReuso;
+		dominios = new HashSet<>();
 	}
 
 	public Long getId() {
@@ -160,7 +162,7 @@ public class AnaliseMercado implements IEntidade{
 	public void setObjetivoReuso(String objetivoReuso) {
 		this.objetivoReuso = objetivoReuso;
 	}
-	
+
 	public String getDominioNomes() {
 		return dominioNomes;
 	}
@@ -169,66 +171,140 @@ public class AnaliseMercado implements IEntidade{
 		this.dominioNomes = dominioNomes;
 	}
 
-	public List<Dominio> getDominiosList() {
+	public Set<Dominio> getDominios() {
 		return dominios;
 	}
 
-	public void setDominios(List<Dominio> dominios) {
+	public void setDominios(Set<Dominio> dominios) {
 		this.dominios = dominios;
-		this.dominioNomes = toStringDominios();
+		//this.dominioNomes = toStringDominios();
+	}
+
+	public JSONObject toJsonObject() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("id", String.valueOf(this.id));
+			json.put("estrategiaMarketing", this.estrategiaMarketing);
+			json.put("necessidadeMercado", this.necessidadeMercado);
+			json.put("concorrencia", this.concorrencia);
+			json.put("tecnologiaDesenvolvimento",
+					this.tecnologiaDesenvolvimento);
+			json.put("ambienteComputacional", this.ambienteComputacional);
+			json.put("perfilCliente", this.perfilCliente);
+			json.put("nivelHabilidade", this.nivelHabilidade);
+			json.put("restricaoCultural", this.restricaoCultural);
+			json.put("tempoEntrega", this.tempoEntrega);
+			json.put("objetivoNegocio", this.objetivoNegocio);
+			json.put("objetivoReuso", this.objetivoReuso);
+			json.put("dominioNomes", toStringDominios());
+			json.put("dominioValores", toArrayIdDominios());
+			
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
 	}
 	
-	public Map<String, String> toMap(){
-		HashMap<String, String> map = new HashMap<>();
-		
-		map.put("id", String.valueOf( this.id)); 
-		map.put("estrategiaMarketing",this.estrategiaMarketing);
-		map.put("necessidadeMercado", this.necessidadeMercado);
-		map.put("concorrencia", this.concorrencia);
-		map.put("tecnologiaDesenvolvimento", this.tecnologiaDesenvolvimento);
-		map.put("ambienteComputacional",this.ambienteComputacional);
-		map.put("perfilCliente",this.perfilCliente);
-		map.put("nivelHabilidade",this.nivelHabilidade);
-		map.put("restricaoCultural",this.restricaoCultural);
-		map.put("tempoEntrega",this.tempoEntrega);
-		map.put("objetivoNegocio",this.objetivoNegocio);
-		map.put("objetivoReuso",this.objetivoReuso);
-		//map.put("dominios", toStringDominios());
-		
-		
-		return map;
+	public HashMap<String, String> toMap() {
+//		HashMap<String, String> map = new HashMap<String, String>();
+//		try {
+//			map.put("id", String.valueOf(this.id));
+//			map.put("estrategiaMarketing", this.estrategiaMarketing);
+//			map.put("necessidadeMercado", this.necessidadeMercado);
+//			map.put("concorrencia", this.concorrencia);
+//			map.put("tecnologiaDesenvolvimento",
+//					this.tecnologiaDesenvolvimento);
+//			map.put("ambienteComputacional", this.ambienteComputacional);
+//			map.put("perfilCliente", this.perfilCliente);
+//			map.put("nivelHabilidade", this.nivelHabilidade);
+//			map.put("restricaoCultural", this.restricaoCultural);
+//			map.put("tempoEntrega", this.tempoEntrega);
+//			map.put("objetivoNegocio", this.objetivoNegocio);
+//			map.put("objetivoReuso", this.objetivoReuso);
+//			map.put("dominioNomes", toStringDominios());
+//		//	map.put("dominioValores", toArrayIdDominios());
+//			
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		return map;
+		return new HashMap<>();
+	}
+
+	private Long[] toArrayIdDominios() {
+		if (dominios != null) {
+			Long[] dominioValores = new Long[dominios.size()];
+			int i = 0;
+			for (Dominio d : dominios) {
+				dominioValores[i++] = d.getId();
+			}
+			return dominioValores;
+		}
+		return new Long[0];
 	}
 
 	private String toStringDominios() {
+
 		StringBuilder sb = new StringBuilder("[");
-		for (Dominio d : dominios) {
-			sb.append(d.getNome());
-			sb.append(",");
+		if (dominios != null) {
+			for (Dominio d : dominios) {
+				sb.append(d.getNome());
+				sb.append(",");
+			}
 		}
 		sb.append("]");
 		return sb.toString();
 	}
 
-	public void processJsonObject(JSONObject jsonObj, boolean novo) {
-		
+	public void fromJsonObject(JSONObject jsonObj, boolean novo) {
+
 		try {
-			this.id = novo? 0l:jsonObj.getLong("id");
+			this.id = novo ? 0l : jsonObj.getLong("id");
 			this.estrategiaMarketing = jsonObj.getString("estrategiaMarketing");
 			this.necessidadeMercado = jsonObj.getString("necessidadeMercado");
 			this.concorrencia = jsonObj.getString("concorrencia");
-			this.tecnologiaDesenvolvimento = jsonObj.getString("tecnologiaDesenvolvimento");
-			this.ambienteComputacional = jsonObj.getString("ambienteComputacional");
+			this.tecnologiaDesenvolvimento = jsonObj
+					.getString("tecnologiaDesenvolvimento");
+			this.ambienteComputacional = jsonObj
+					.getString("ambienteComputacional");
 			this.perfilCliente = jsonObj.getString("perfilCliente");
 			this.nivelHabilidade = jsonObj.getString("nivelHabilidade");
 			this.restricaoCultural = jsonObj.getString("restricaoCultural");
 			this.tempoEntrega = jsonObj.getString("tempoEntrega");
 			this.objetivoNegocio = jsonObj.getString("objetivoNegocio");
 			this.objetivoReuso = jsonObj.getString("objetivoReuso");
-			
+			JSONArray dominioValores = jsonObj.getJSONArray("dominioValores");
+			this.dominios = new HashSet<>();
+			for (int i = 0; i < dominioValores.length(); i++) {
+				Dominio d = new Dominio();
+				d.setId(dominioValores.getLong(i));
+				this.dominios.add(d);
+			}
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
-
 	
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// Warning - this method won't work in the case the id fields are not
+		// set
+		if (!(obj instanceof AnaliseMercado)) {
+			return false;
+		}
+		AnaliseMercado other = (AnaliseMercado) obj;
+		if ((this.id == null && other.id != null)
+				|| (this.id != null && !this.id.equals(other.id))) {
+			return false;
+		}
+		return true;
+	}
+
 }

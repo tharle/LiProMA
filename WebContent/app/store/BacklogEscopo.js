@@ -1,7 +1,7 @@
 Ext.define('Liproma.store.BacklogEscopo', {
 	extend: 'Ext.data.Store',
 	model: 'Liproma.model.BacklogEscopo',
-	//autoLoad: true,
+	autoLoad: true,
 	pageSize: 35,
 	autoload: {start:0, limit:35},
 	
@@ -15,13 +15,13 @@ Ext.define('Liproma.store.BacklogEscopo', {
 		},
 		reader:{
 			type: 'json',
-			root: 'backlogescopos',
+			root: 'backlogEscopos',
 			sucessProperty: 'sucess'
 		},
 		writer: {
 			type: 'json',
 			writeAllFields: true,
-			root: 'backlogescopos'
+			root: 'backlogEscopos'
 		}
 	}
 	

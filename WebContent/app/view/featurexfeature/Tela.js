@@ -31,12 +31,12 @@ Ext.define('Liproma.view.featurexfeature.Tela', {
 				xtype : 'combo',
 				id : 'cmbfeaturexfeature',
 				name : 'idFeaturePai',
-				fieldLabel : 'Selecione Feature Pai',
+				fieldLabel : 'Selecione Feature',
 				displayField : 'nome',
 				valueField : 'id',
 				store : Ext.create('Liproma.store.Feature'),
 				triggerAction : 'all',
-				queryMode : 'local',
+				queryMode : 'local'
 			} ]
 		}, {
 			xtype : 'featurexfeaturedesenho'

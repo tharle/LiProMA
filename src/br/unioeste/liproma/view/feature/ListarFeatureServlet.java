@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 
 import br.unioeste.liproma.controller.FeatureController;
 import br.unioeste.liproma.model.entidade.Feature;
+import br.unioeste.liproma.utils.AdapterUtils;
 
 import com.google.gson.Gson;
 
@@ -67,22 +68,32 @@ public class ListarFeatureServlet extends HttpServlet {
 				root = "features";
 				String idFeatureSelecionada = request.getParameter("id");
 				features = (ArrayList<Feature>) controle.buscarFeatureXFeature(Long.parseLong(idFeatureSelecionada));
+			}else if (parameterMap != null && parameterMap.containsKey("featurePrincipal")) {
+				root = "features";
+				String featurePrincipal = request.getParameter("featurePrincipal");
+				if(featurePrincipal.equals("true")){
+					features = (ArrayList<Feature>) controle
+							.buscarFeaturesPorCampo("principal", "true");
+				}
+				
+			} else if (parameterMap != null && parameterMap.containsKey("idBacklogEscopo")) {
+				root = "featureBacklogEscopos";
+				String idBacklogEscopo = request.getParameter("idBacklogEscopo");
+					features =  new ArrayList<>( controle
+							.buscarFeaturesPorIdBacklogEscopo(idBacklogEscopo));
 			} else {
 				root = "features";
 				features = (ArrayList<Feature>) controle
 						.buscarFeaturesPorCampo("", "");
 			}
-			Gson gson = new Gson();
-			result.put(root, features);
+			result.put(root, AdapterUtils.toJSONArrayAdapter( features));
 			result.put("total", features.size());
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
-		} catch (Exception e) {
-			Gson gson = new Gson();
-			result.put("total", 0);
-			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 
+		} catch (Exception e) {
+			result.put("sucess", false);
+			out.println(result);
 			e.printStackTrace();
 		} finally {
 			out.flush();

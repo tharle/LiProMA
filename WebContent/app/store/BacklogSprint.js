@@ -15,13 +15,13 @@ Ext.define('Liproma.store.BacklogSprint', {
 		},
 		reader:{
 			type: 'json',
-			root: 'backlogsprints',
+			root: 'backlogSprints',
 			sucessProperty: 'sucess'
 		},
 		writer: {
 			type: 'json',
 			writeAllFields: true,
-			root: 'backlogsprints'
+			root: 'backlogSprints'
 		}
 	}
 	

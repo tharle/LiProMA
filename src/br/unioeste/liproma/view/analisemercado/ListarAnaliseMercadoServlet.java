@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,9 +17,11 @@ import org.json.simple.JSONObject;
 
 import br.unioeste.liproma.controller.AnaliseMercadoController;
 import br.unioeste.liproma.model.entidade.AnaliseMercado;
+import br.unioeste.liproma.model.entidade.Dominio;
 import br.unioeste.liproma.model.entidade.DominioAnaliseMercado;
 import br.unioeste.liproma.model.entidade.IEntidade;
 import br.unioeste.liproma.store.factory.AbstractDaoFactory;
+import br.unioeste.liproma.utils.AdapterUtils;
 
 import com.google.gson.Gson;
 
@@ -66,23 +69,35 @@ public class ListarAnaliseMercadoServlet extends HttpServlet {
 		try {
 
 			
-			ArrayList<AnaliseMercado> analiseMercados = (ArrayList<AnaliseMercado>) controle.buscarAnaliseMercadosPorId("", "");
-
-			HashMap<String, String> dominios = new HashMap<>();
-			dominios.put("numero 1", "numero1");
+			ArrayList<AnaliseMercado> analiseMercados;
 			
-			Gson gson = new Gson();
-			result.put("analiseMercados", analiseMercados);
+			
+			
+			
+			Map<String, String[]> parameterMap = request.getParameterMap();
+			String root;
+			if (parameterMap != null
+					&& parameterMap.containsKey("analiseMercadoId")) {
+				String idAnaliseMercado = request
+						.getParameter("analiseMercadoId");
+				analiseMercados = (ArrayList<AnaliseMercado>) controle.buscarAnaliseMercadosPorId("id", String.valueOf(idAnaliseMercado));
+			}else{
+				analiseMercados = (ArrayList<AnaliseMercado>) controle.buscarAnaliseMercadosPorId("", "");
+			}
+			
+			
+			
+			
+			//TODO transformar essa lista em json object antes de pssar no result
+			result.put("analiseMercados", AdapterUtils.toJSONArrayAdapter(analiseMercados));
 			result.put("value", "Valor locao");
 			result.put("total", analiseMercados.size());
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
-		} catch (Exception e) {
-			Gson gson = new Gson();
-			result.put("total", 0);
-			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 
+		} catch (Exception e) {
+			result.put("sucess", false);
+			out.println(result);
 			e.printStackTrace();
 		} finally {
 			out.flush();

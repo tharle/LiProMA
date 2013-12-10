@@ -1,3 +1,5 @@
+var _sprintStore =  Ext.create('Liproma.store.BacklogSprint');
+
 Ext.define('Liproma.view.backlogsprint.Grid', {
 	extend : 'Ext.grid.Panel',
 	alias : 'widget.backlogsprintgrid',
@@ -6,35 +8,47 @@ Ext.define('Liproma.view.backlogsprint.Grid', {
 
 	iconCls : 'icon-grid',
 	title : 'Backlog Sprint',
-	store : 'BacklogSprint',
+	store : _sprintStore,
 	renderTo : Ext.getBody(),
 
 	columns : [ {
+		header : 'DESCRIÇÃO',
+		width : 170,
+		flex : 1,
+		dataIndex : 'descricao'
+	},{
 		header : 'FEATURES PRINCIPAIS',
 		width : 170,
 		flex : 1,
-		dataIndex : 'featuresSelecionadas'
-	}, {
-		header : 'TAREFAS',
+		dataIndex : 'featureNomes'
+	},{
+		header : 'RESPONSAVEIS',
 		width : 170,
 		flex : 1,
-		dataIndex : 'tarefa'
+		dataIndex : 'featureNomes'
 	}, {
-		header : 'FEATURE',
+		header : 'LOCAL REUNIÃO',
 		width : 170,
 		flex : 1,
-		dataIndex : 'feature'
+		dataIndex : 'localReuniao'
 	}, {
-		header : 'RESPONSÁVEIS',
+		header : 'DATA INICIO',
 		width : 170,
 		flex : 1,
-		dataIndex : 'responsaveis'
+		dataIndex : 'dataInicio'
 	}, {
-		header : 'STATUS',
+		header : 'DATA FIM',
 		width : 170,
 		flex : 1,
-		dataIndex : 'statusTarefa'
-	}],
+		dataIndex : 'dataFim'
+	},
+//	{
+//		header : 'STATUS',
+//		width : 170,
+//		flex : 1,
+//		dataIndex : 'statusTarefa'
+//	}
+	],
 
 	initComponent : function() {
 		this.dockedItems = [ {
@@ -57,7 +71,7 @@ Ext.define('Liproma.view.backlogsprint.Grid', {
 		}, {
 			xtype : 'pagingtoolbar',
 			dock : 'top',
-			store : 'BacklogSprint',
+			store : _sprintStore,
 			displayInfo : true,
 			displayMsg : 'Mostrando Tarefa(s)  {0} - {1} de {2}',
 			emptyMsg : 'Nenhuma Tarefa encontrada.'

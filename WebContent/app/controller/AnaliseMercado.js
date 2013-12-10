@@ -1,9 +1,9 @@
 Ext.define('Liproma.controller.AnaliseMercado', {
 	extend : 'Ext.app.Controller',
 
-	stores : [ 'AnaliseMercado' ],
+	stores : [ 'AnaliseMercado', 'Dominio' ],
 
-	models : [ 'AnaliseMercado' ],
+	models : [ 'AnaliseMercado', 'Dominio' ],
 
 	views : [ 'analisemercado.Formulario', 'analisemercado.Grid' ],
 
@@ -16,11 +16,10 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 	} ],
 
 	init : function() {
-		var ultimoItemSelecionado;
 		this.control({
 			'analisemercadogrid dataview' : {
 				itemdblclick : this.editarAnaliseMercado,
-				itemclick: this.alterandoItensGrid
+				itemclick : this.alterandoItensGrid
 			},
 			'analisemercadogrid button[action=add]' : {
 				click : this.editarAnaliseMercado
@@ -34,14 +33,21 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 			},
 			'analisemercadoform button[action=save]' : {
 				click : this.atualizarAnaliseMercadoForm
+			},
+			'analisemercadoform dataview' : {
+				afterrender : this.alterandoItensGrid,
+
 			}
 
 		});
 	},
 
 	editarAnaliseMercado : function(grid, record) {
+		//Salvando cookie da analise de mercado selecionada
 		var edit = Ext.create('Liproma.view.analisemercado.Formulario').show();
 		if (record && record.getData) {
+			Ext.util.Cookies.set('analiseMercadoSelecionada', record.getData().id);
+			edit.atualizandoDominios(record.getData().id);
 			edit.down('form').loadRecord(record);
 			// edit.down('form').up('panel').down('multiselect').store = define;
 		}
@@ -62,7 +68,16 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		var form = win.down('form');
 		var record = form.getRecord();
 		var values = form.getValues();
-
+		var novo = false;
+		var dominiosSelecionados = new Array();
+		var domckb = form.getChildByElement('ckbdominioanalisemercado').down('checkboxgroup');
+		// /domckb.items.items[1].checked
+		for ( var i = 0; i < domckb.items.length; i++) {
+			if (domckb.items.items[i].checked) {
+				dominiosSelecionados.push(domckb.items.items[i].inputValue);
+			}
+		}
+		values.dominioValores = dominiosSelecionados;
 		if (values.id > 0) {
 			record.set(values);
 		} else {
@@ -75,9 +90,9 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 		win.close();
 		this.getAnaliseMercadoStore().sync();
 
-		// if (novo) {// faz reload para atualizar
-		// this.getAnaliseMercadoStore().load();
-		// }
+		 if (novo) {// faz reload para atualizar
+			this.getAnaliseMercadoStore().load();
+		}
 	},
 
 	deletarAnaliseMercado : function(button) {
@@ -100,10 +115,25 @@ Ext.define('Liproma.controller.AnaliseMercado', {
 				});
 
 	},
-	
-	alterandoItensGrid: function(grid, record, item, index){
-		var itemSelecionado = grid.getStore().getAt(index);
-		 //Ext.ComponentQuery.query('analisemercadoform #cityCombo')[0]
-		//Ext.Msg.alert('Status', 'Changes saved successfully.');
+
+	alterandoItensGrid : function(grid, record, item, index) {
+//		var domckb;
+//		var ckbs = Ext.ComponentQuery.query('checkboxgroup');
+//		// ckbdominioanalisemercado
+//
+//		for ( var i = 0; i < ckbs.items.length; i++) {
+//			if (ckbs.id == 'ckbdominioanalisemercado') {
+//				domckb = ckbs[i];
+//				for ( var i = 0; i < domckb.items.length; i++) {
+//					if (domckb.items.items[i].checked) {
+//						dominiosSelecionados
+//								.push(domckb.items.items[i].inputValue);
+//					}
+//				}
+//				break;
+//			}
+//		}
+		
+
 	}
 });

@@ -1,11 +1,13 @@
 <?xml version="1.0"?>  
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping.dtd">  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">  
 <hibernate-mapping>  
     <class name="br.unioeste.liproma.model.entidade.Produto" table="produto">  
         <id name="id" column="id" type="long">  
             <generator class="native"/>  
         </id>  
         <property name="nome" column="nome" type="string"/>  
-        <property name="descricao" column="descricao" type="string"/>  
+        <property name="descricao" column="descricao" type="string"/>
     </class>  
 </hibernate-mapping> 

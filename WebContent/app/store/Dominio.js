@@ -1,9 +1,9 @@
 Ext.define('Liproma.store.Dominio', {
 	extend: 'Ext.data.Store',
 	model: 'Liproma.model.Dominio',
-	autoLoad: true,
+	autoLoad: false,
 	pageSize: 35,
-	autoload: {start:0, limit:35},
+	//autoload: {start:0, limit:35},
 	
 	proxy: {
 		type:'ajax',

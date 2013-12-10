@@ -2,16 +2,15 @@ Ext.define('Liproma.model.BacklogEscopo', {
 	extend : 'Ext.data.Model',
 	fields : [ {
 		name : 'id'
-	},{
-		name : 'dominios'
-	},{
-		name : 'feature'
 	}, {
-		name : 'prioridade'
+		name : 'featureNomes'
 	}, {
-		name : 'estimativa'
-	} , {
+		name : 'featureValores'
+	}, {
+		name : 'produtoValores',
+		defaultValue : []
+	}, {
 		name : 'descricao'
-	}],
-	idProperty: 'id'
+	} ],
+	idProperty : 'id'
 });

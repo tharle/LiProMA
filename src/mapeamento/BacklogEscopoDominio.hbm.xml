@@ -1,0 +1,20 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="br.unioeste.liproma.model.entidade.BacklogEscopoDominio"
+		table="backlog_escopo_dominio">
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
+
+		<many-to-one name="backlogEscopo"
+			class="br.unioeste.liproma.model.entidade.BacklogEscopo" column="id_backlog_escopo"
+			cascade="refresh" not-null="true" lazy="false" />
+
+		<many-to-one name="dominio"
+			class="br.unioeste.liproma.model.entidade.Dominio" column="id_dominio"
+			cascade="refresh" not-null="true" lazy="false" />
+	</class>
+</hibernate-mapping> 

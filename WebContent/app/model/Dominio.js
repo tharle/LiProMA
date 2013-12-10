@@ -9,5 +9,9 @@ Ext.define('Liproma.model.Dominio', {
 	}, {
 		name : 'descricao',
 		type : 'String'
-	} ]
+	}
+	, {
+		name : 'selecionado',
+		type : 'Boolean'
+	}]
 });

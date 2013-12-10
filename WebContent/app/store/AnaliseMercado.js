@@ -1,9 +1,9 @@
 Ext.define('Liproma.store.AnaliseMercado', {
 	extend:'Ext.data.Store',
 	model: 'Liproma.model.AnaliseMercado',
-	//autoLoad: true,
+	autoLoad: true,
 	pageSize: 35,
-	autoload: {start: 0, limit: 35},
+	autoLoad: {start: 0, limit: 35},
 	
 	proxy: {
 		type:'ajax',

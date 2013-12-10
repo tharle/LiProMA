@@ -13,6 +13,7 @@ Ext.define('Liproma.model.AnaliseMercado', {
 		'tempoEntrega',
 		'objetivoNegocio',
 		'objetivoReuso',
-		'dominioNomes'
+		'dominioNomes',
+		'dominioValores'
 	]
 });

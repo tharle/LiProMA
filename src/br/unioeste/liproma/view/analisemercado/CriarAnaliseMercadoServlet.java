@@ -58,18 +58,16 @@ public class CriarAnaliseMercadoServlet extends HttpServlet {
 			AnaliseMercado analiseMercado = new AnaliseMercado();
 			org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
 			
-			analiseMercado.processJsonObject(
+			analiseMercado.fromJsonObject(
 					(org.json.JSONObject) jsonObj.get("analiseMercados"),true);
 			controlador.gravar(analiseMercado, true);
 
-			Gson gson = new Gson();
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
+			out.println(result);
 
 		} catch (Exception e) {
-			Gson gson = new Gson();
 			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 		} finally {
 			out.flush();
 			out.close();

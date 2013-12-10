@@ -5,7 +5,7 @@ Ext.define('Liproma.controller.BacklogSprint', {
 
 	models : [ 'BacklogSprint' ],
 
-	views : [ 'backlogsprint.Formulario', 'backlogsprint.Grid' ],
+	views : [ 'backlogsprint.Formulario', 'backlogsprint.Grid', 'backlogsprint.Tela' ],
 
 	refs : [ {
 		ref : 'backlogsprintPanel',
@@ -32,6 +32,8 @@ Ext.define('Liproma.controller.BacklogSprint', {
 			},
 			'backlogsprintform button[action=save]' : {
 				click : this.atualizarBacklogSprintForm
+			},'backlogsprinttela #cmbsprintbacklogescopo' : {
+				select : this.selecionarBacklogEscopo
 			}
 		});
 	},
@@ -39,6 +41,7 @@ Ext.define('Liproma.controller.BacklogSprint', {
 	editarBacklogSprint : function(grid, record) {
 		var edit = Ext.create('Liproma.view.backlogsprint.Formulario').show();
 		if (record && record.getData) {
+			edit.atualizandoBS(record.getData().id);
 			edit.down('form').loadRecord(record);
 		}
 	},
@@ -49,6 +52,7 @@ Ext.define('Liproma.controller.BacklogSprint', {
 
 		var edit = Ext.create('Liproma.view.backlogsprint.Formulario').show();
 		if (record && record.getData) {
+			record.data.idBacklogEscopo = Ext.getCmp('cmbsprintbacklogescopo').getValue();
 			edit.down('form').loadRecord(record);
 		}
 	},
@@ -58,8 +62,22 @@ Ext.define('Liproma.controller.BacklogSprint', {
 		var form = win.down('form');
 		var record = form.getRecord();
 		var values = form.getValues();
+		var novo = false;
+		// --Feature
+		var featureSelecionados = new Array();
+		var fetckb = form.getChildByElement('ckbbsfeature').down(
+				'checkboxgroup');
+		for ( var i = 0; i < fetckb.items.length; i++) {
+			if (fetckb.items.items[i].checked) {
+				featureSelecionados.push(fetckb.items.items[i].inputValue);
+			}
+		}
+		values.featureValores = featureSelecionados;
+		// ---
 
 
+		values.idBacklogEscopo = Ext.getCmp('cmbsprintbacklogescopo').getValue();
+		
 		if (values.id > 0) {
 			record.set(values);
 		} else {
@@ -72,9 +90,9 @@ Ext.define('Liproma.controller.BacklogSprint', {
 		win.close();
 		this.getBacklogSprintStore().sync();
 
-//		if (novo) {// faz reload para atualizar
-//			this.getBacklogSprintStore().load();
-//		}
+		if (novo) {// faz reload para atualizar
+			this.getBacklogSprintStore().load();
+		}
 	},
 
 	deletarBacklogSprint : function(button) {
@@ -95,5 +113,13 @@ Ext.define('Liproma.controller.BacklogSprint', {
 								'BacklogSprint deletado com sucesso!');
 					}
 				});
+	},
+	selecionarBacklogEscopo : function(combo, records) {
+		Ext.util.Cookies.set('sprintEscopo',  combo.getValue());
+		_sprintStore.load({
+			params : {
+				idBacklogEscopo :  combo.getValue()
+			}
+		});
 	}
 });

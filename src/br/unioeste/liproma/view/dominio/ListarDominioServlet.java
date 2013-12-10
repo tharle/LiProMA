@@ -14,8 +14,7 @@ import org.json.simple.JSONObject;
 
 import br.unioeste.liproma.controller.DominioController;
 import br.unioeste.liproma.model.entidade.Dominio;
-
-import com.google.gson.Gson;
+import br.unioeste.liproma.utils.AdapterUtils;
 
 /**
  * Servlet implementation class DominioServlet
@@ -61,18 +60,14 @@ public class ListarDominioServlet extends HttpServlet {
 		try {
 			ArrayList<Dominio> dominios = (ArrayList<Dominio>) controle.buscarDominiosPor("", "");
 
-			Gson gson = new Gson();
-			result.put("dominios", dominios);
+			result.put("dominios", AdapterUtils.toJSONArrayAdapter(dominios));
 			result.put("total", dominios.size());
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
-		} catch (Exception e) {
-			Gson gson = new Gson();
-			result.put("total", 0);
-			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 
-			e.printStackTrace();
+		} catch (Exception e) {
+			result.put("sucess", false);
+			out.println(result);
 		} finally {
 			out.flush();
 			out.close();

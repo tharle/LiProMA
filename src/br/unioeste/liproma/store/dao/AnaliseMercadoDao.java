@@ -1,7 +1,6 @@
 package br.unioeste.liproma.store.dao;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -10,8 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import br.unioeste.liproma.model.entidade.AnaliseMercado;
+import br.unioeste.liproma.model.entidade.Dominio;
+import br.unioeste.liproma.model.entidade.DominioAnaliseMercado;
 import br.unioeste.liproma.model.entidade.IEntidade;
-import br.unioeste.liproma.model.entidade.Produto;
 
 public class AnaliseMercadoDao extends Dao {
 
@@ -20,15 +20,19 @@ public class AnaliseMercadoDao extends Dao {
 	}
 
 	@Override
-	public void insert(IEntidade entidate) throws Exception {
+	public IEntidade insert(IEntidade entidate) throws Exception {
 		AnaliseMercado analiseMercado = (AnaliseMercado) entidate;
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
+		session.clear();
 
 		try {
 			tx = session.beginTransaction();
-			session.save(analiseMercado);
+
+			AnaliseMercado result = (AnaliseMercado) session
+					.merge(analiseMercado);
 			tx.commit();
+			return result;
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -36,6 +40,7 @@ public class AnaliseMercadoDao extends Dao {
 		} finally {
 			session.close();
 		}
+		return null;
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public class AnaliseMercadoDao extends Dao {
 	public List findAll() throws Exception {
 		return getList("FROM AnaliseMercado");
 	}
-	
+
 	@Override
 	public void update(IEntidade entidate) throws Exception {
 		AnaliseMercado analiseMercado = (AnaliseMercado) entidate;
@@ -71,8 +76,9 @@ public class AnaliseMercadoDao extends Dao {
 		Transaction tx = null;
 
 		try {
+			session.flush();
 			tx = session.beginTransaction();
-			 session.update(analiseMercado); 
+			session.merge(analiseMercado);
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -102,8 +108,33 @@ public class AnaliseMercadoDao extends Dao {
 		}
 	}
 
-	public List<IEntidade> findWhere(String campo, String text) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<IEntidade> findWhere(String campo, String text)
+			throws Exception {
+		return getList("FROM AnaliseMercado WHERE " + campo + " = " + text);
+	}
+
+	public void removeDominioAnaliseMercado(AnaliseMercado analiseMercado, List<Dominio> dominios) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+
+		try {
+			tx = session.beginTransaction();
+			for (Dominio d : dominios) {
+				List dams = session.createQuery(
+						"FROM DominioAnaliseMercado WHERE AnaliseMercado.id = "
+								+ analiseMercado.getId() + " AND Dominio.id = "
+								+ d.getId()).list();
+				if (dams.size() > 0)
+					session.delete(dams.get(0));
+			}
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
 	}
 }

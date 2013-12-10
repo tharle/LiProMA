@@ -1,0 +1,21 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
+<hibernate-mapping>  
+    <class name="br.unioeste.liproma.model.entidade.BacklogSprint" table="backlog_sprint">  
+        <id name="id" column="id" type="long">  
+            <generator class="native"/>  
+        </id>
+        <property name="descricao" column="descricao" type="string"/>  
+        <property name="dataInicio" column="data_inicio" type="date"/>
+        <property name="dataFim" column="data_fim" type="date"/>
+        <property name="localReuniao" column="local_reuniao" type="string"/>
+        
+        <!-- Backlog Escopo -->
+        <many-to-one name="backlogEscopo" class="br.unioeste.liproma.model.entidade.BacklogEscopo" column="id_backlog_escopo"
+			cascade="refresh" not-null="true" lazy="false" />
+      
+        
+    </class>  
+</hibernate-mapping> 

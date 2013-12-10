@@ -62,16 +62,19 @@ public class DeletarAnaliseMercadoServlet extends HttpServlet {
 			AnaliseMercado analiseMercado = new AnaliseMercado();
 			org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
 			
-			analiseMercado.processJsonObject(
+			analiseMercado.fromJsonObject(
 					(org.json.JSONObject) jsonObj.get("analiseMercados"), false);
 			controlador.excluir(analiseMercado);
 
-			Gson gson = new Gson();
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
+			out.println(result);
+
 		} catch (Exception e) {
-				result.put("sucess", false);
-			e.printStackTrace();
+			result.put("sucess", false);
+			out.println(result);
+		} finally {
+			out.flush();
+			out.close();
 		}
 	}
 

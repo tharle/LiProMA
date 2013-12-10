@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 
 import br.unioeste.liproma.controller.ProdutoController;
 import br.unioeste.liproma.model.entidade.Produto;
+import br.unioeste.liproma.utils.AdapterUtils;
 
 import com.google.gson.Gson;
 
@@ -61,18 +62,17 @@ public class ListarProdutoServlet extends HttpServlet {
 		try {
 
 			
-			ArrayList<Produto> produtos = (ArrayList<Produto>) controle.buscarProdutosPorId("", "");
+			ArrayList<Produto> produtos = (ArrayList<Produto>) controle.buscarProdutosPorCampo("", "");
 
-			Gson gson = new Gson();
-			result.put("produtos", produtos);
+			result.put("produtos", AdapterUtils.toJSONArrayAdapter( produtos));
 			result.put("total", produtos.size());
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
+			out.println(result);
 		} catch (Exception e) {
 			Gson gson = new Gson();
 			result.put("total", 0);
 			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 
 			e.printStackTrace();
 		} finally {

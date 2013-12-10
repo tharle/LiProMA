@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import br.unioeste.liproma.controller.BacklogSprintController;
 import br.unioeste.liproma.controller.FeatureController;
-import br.unioeste.liproma.model.entidade.BacklogEscopo;
 import br.unioeste.liproma.model.entidade.BacklogSprint;
+import br.unioeste.liproma.model.entidade.Dominio;
 import br.unioeste.liproma.model.entidade.Feature;
-
-import com.google.gson.Gson;
+import br.unioeste.liproma.utils.AdapterUtils;
 
 /**
  * Servlet implementation class FeatureServlet
@@ -26,14 +26,14 @@ import com.google.gson.Gson;
 @WebServlet("/ListarBacklogSprint.form")
 public class ListarBacklogSprintServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	FeatureController controle;
+	BacklogSprintController controle;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ListarBacklogSprintServlet() {
 		super();
-		controle = new FeatureController();
+		controle = new BacklogSprintController();
 	}
 
 	/**
@@ -62,20 +62,23 @@ public class ListarBacklogSprintServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JSONObject result = new JSONObject();
 		try {
-			ArrayList<BacklogSprint> sprints = new ArrayList<>();
-			sprints.add(new BacklogSprint(1,"Backlog de Escopo para Feature \"f1\"", "Especificar sub-features", "[Tharle, Henrique, Julio,]", "Em andamento", "[f1,]"));
-			sprints.add(new BacklogSprint(2,"Backlog de Escopo para Feature \"f1\"", "Refinar Features", "[Tharle, ]", "Cancelada", "[f1,]"));
-			sprints.add(new BacklogSprint(3,"Backlog de Escopo para Feature \"f1\"", "Identificar Sub-features dos experts do dominio", "[Tharle, Henrique,]", "Feita", "[f1,]"));
-			Gson gson = new Gson();
-			result.put("backlogsprints", sprints);
+			ArrayList<BacklogSprint> sprints = new ArrayList<>() ;
+			Map<String, String[]> parameterMap = request.getParameterMap();
+			if (parameterMap != null && parameterMap.containsKey("idBacklogEscopo")) {
+				String idBacklogEscopo = request.getParameter("idBacklogEscopo");
+				sprints =  (ArrayList<BacklogSprint>) controle.buscarBacklogSprintsPorCampo("id_backlog_escopo", idBacklogEscopo);
+			} else {
+				sprints = (ArrayList<BacklogSprint>) controle.buscarBacklogSprintsPorCampo("", "");
+			}
+			
+			result.put("backlogSprints", AdapterUtils.toJSONArrayAdapter(sprints));
 			result.put("total", sprints.size());
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
+			out.println(result);
 		} catch (Exception e) {
-			Gson gson = new Gson();
 			result.put("total", 0);
 			result.put("sucess", false);
-			out.println(gson.toJson(result));
+			out.println(result);
 
 			e.printStackTrace();
 		} finally {

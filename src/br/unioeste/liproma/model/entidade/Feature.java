@@ -1,18 +1,27 @@
 package br.unioeste.liproma.model.entidade;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Entity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Entity
-public class Feature implements IEntidade {
+import br.unioeste.liproma.controller.FeatureController;
 
-	class Prioridade {
+@Entity
+public class Feature implements IEntidade, Comparable{
+
+	public class PontoVariacao {
+		public final static int NENHUM = 0;
+		public final static int OR = 1;
+		public final static int XOR = 2;
+	}
+
+	public class Prioridade {
 		public final static int MUITO_ALTA = 0;
 		public final static int ALTA = 1;
 		public final static int MEDIA = 2;
@@ -21,8 +30,6 @@ public class Feature implements IEntidade {
 	}
 
 	private Long id;
-	private Long idFeaturePai;
-	private String featurePaiNome;
 	private String nome;
 	private String descricao;
 	private Integer prioridade;
@@ -30,37 +37,30 @@ public class Feature implements IEntidade {
 	private String bindingTime;
 	private int x, y;
 	private boolean principal;
+	private Integer pontoVariacao;
+	private boolean obrigatoria;
+	private Feature featurePai;
+	private Set<Dominio> dominios;
+	private boolean selecionado;
+	private String estimativa;
 
 	public Feature() {
 		this.id = 0l;
-		this.idFeaturePai = 0l;
 		this.nome = "";
 		this.descricao = "";
 		this.prioridade = Prioridade.MEDIA;
+		this.pontoVariacao = PontoVariacao.NENHUM;
 		this.bindingTime = "";
 		this.x = y = 0;
+		// this.featurePai = this;
+		this.dominios = new HashSet<>();
+		this.selecionado = false;
 	}
 
 	@Override
 	public Long getId() {
 
 		return id;
-	}
-
-	public Long getIdFeaturePai() {
-		return idFeaturePai;
-	}
-
-	public String getFeaturePaiNome() {
-		return featurePaiNome;
-	}
-
-	public void setFeaturePaiNome(String featurePaiNome) {
-		this.featurePaiNome = featurePaiNome;
-	}
-
-	public void setIdFeaturePai(Long idFeaturePai) {
-		this.idFeaturePai = idFeaturePai;
 	}
 
 	public String getNome() {
@@ -153,32 +153,177 @@ public class Feature implements IEntidade {
 		this.y = y;
 	}
 
-	public Map<String, String> toMap() {
-		HashMap<String, String> map = new HashMap<>();
-
-		map.put("id", String.valueOf(this.id));
-		map.put("idFeaturePai", String.valueOf(this.idFeaturePai));
-		map.put("nome", this.nome);
-		map.put("descricao", this.descricao);
-		map.put("prioridade", String.valueOf(this.prioridade));
-		map.put("bindingTime", this.bindingTime);
-
-		return map;
-	}
-
-	public void processJsonObject(JSONObject jsonObj, boolean novo) {
+	public void fromJsonObject(JSONObject jsonObj, boolean novo) {
 
 		try {
 			this.id = novo ? 0l : jsonObj.getLong("id");
-			this.idFeaturePai = jsonObj.getLong("idFeaturePai");
+			boolean possuiFeaturePai = jsonObj.getBoolean("possuiFeaturePai");
+			Long idFeaturePai = jsonObj.getLong("idFeaturePai");
+			if (possuiFeaturePai && idFeaturePai != 0 && idFeaturePai != id) {
+				this.featurePai = new Feature();
+				
+				FeatureController fc = new FeatureController();
+				try {
+					List<Feature> fs = fc.buscarFeaturesPorCampo("id", String.valueOf(idFeaturePai));
+					if(fs.size() > 0){						
+						this.featurePai = fs.get(0);
+					}else{
+						this.featurePai = null;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				featurePai = null;
+			}
 			this.nome = jsonObj.getString("nome");
 			this.descricao = jsonObj.getString("descricao");
 			this.prioridade = jsonObj.getInt("prioridade");
 			this.bindingTime = jsonObj.getString("bindingTime");
+			this.principal = jsonObj.getBoolean("principal");
+			this.obrigatoria = jsonObj.getBoolean("obrigatoria");
+			this.estimativa = jsonObj.getString("estimativa");
+			JSONArray dominioValores = jsonObj.getJSONArray("dominioValores");
+			this.dominios = new HashSet<>();
+			for (int i = 0; i < dominioValores.length(); i++) {
+				Dominio d = new Dominio();
+				d.setId(dominioValores.getLong(i));
+				this.dominios.add(d);
+			}
 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public JSONObject toJsonObject() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("id", String.valueOf(this.id));
+			json.put("nome", this.nome);
+			json.put("descricao", this.descricao);
+			json.put("prioridade", this.prioridade);
+			json.put("prioridadeNome", this.prioridadeNome);
+			json.put("bindingTime", this.bindingTime);
+			json.put("x", x);
+			json.put("y", this.y);
+			json.put("principal", this.principal);
+			json.put("pontoVariacao", this.pontoVariacao);
+			json.put("obrigatoria", this.obrigatoria);
+			json.put("dominioValores", toArrayIdDominios());
+			json.put("dominioNomes", toStringDominios());
+			json.put("estimativa", this.estimativa);
+
+			boolean possuiPai = featurePai != null;
+			json.put("idFeaturePai", possuiPai ? this.featurePai.getId() : null);
+			json.put("featurePaiNome", possuiPai ? featurePai.nome
+					: "Não possui feature pai.");
+			json.put("possuiFeaturePai", possuiPai);
+			json.put("selecionado", selecionado);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	public Set<Dominio> getDominios() {
+		return dominios;
+	}
+
+	public void setDominios(Set<Dominio> dominios) {
+		this.dominios = dominios;
+	}
+
+	public Feature getFeaturePai() {
+		return featurePai;
+	}
+
+	public void setFeaturePai(Feature featurePai) {
+		this.featurePai = featurePai;
+	}
+
+	public Integer getPontoVariacao() {
+		return pontoVariacao;
+	}
+
+	public void setPontoVariacao(Integer pontoVariacao) {
+		this.pontoVariacao = pontoVariacao;
+	}
+
+	public boolean isObrigatoria() {
+		return obrigatoria;
+	}
+
+	public void setObrigatoria(boolean obrigatoria) {
+		this.obrigatoria = obrigatoria;
+	}
+
+	private Long[] toArrayIdDominios() {
+		if (dominios != null) {
+			Long[] dominioValores = new Long[dominios.size()];
+			int i = 0;
+			for (Dominio d : dominios) {
+				dominioValores[i++] = d.getId();
+			}
+			return dominioValores;
+		}
+		return new Long[0];
+	}
+
+	private String toStringDominios() {
+
+		StringBuilder sb = new StringBuilder("[");
+		if (dominios != null) {
+			for (Dominio d : dominios) {
+				sb.append(d.getNome());
+				sb.append(",");
+			}
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+
+	public boolean isSelecionado() {
+		return selecionado;
+	}
+
+	public void setSelecionado(boolean selecionado) {
+		this.selecionado = selecionado;
+	}
+	
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// Warning - this method won't work in the case the id fields are not
+		// set
+		if (!(obj instanceof Feature)) {
+			return false;
+		}
+		Feature other = (Feature) obj;
+		if ((this.id == null && other.id != null)
+				|| (this.id != null && !this.id.equals(other.id))) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		return this.equals(arg0)? 0: -1;
+	}
+
+	public String getEstimativa() {
+		return estimativa;
+	}
+
+	public void setEstimativa(String estimativa) {
+		this.estimativa = estimativa;
 	}
 
 }

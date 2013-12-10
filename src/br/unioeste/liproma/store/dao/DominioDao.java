@@ -18,7 +18,7 @@ public class DominioDao extends Dao {
 	}
 
 	@Override
-	public void insert(IEntidade entidate) throws Exception {
+	public IEntidade insert(IEntidade entidate) throws Exception {
 		Dominio dominio = (Dominio) entidate;
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
@@ -34,6 +34,7 @@ public class DominioDao extends Dao {
 		} finally {
 			session.close();
 		}
+		return null;
 	}
 
 	@Override

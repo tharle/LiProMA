@@ -13,8 +13,13 @@ Ext.define('Liproma.view.produto.Grid', {
 		header : 'DOMINIOS',
 		width : 170,
 		flex : 1,
-		dataIndex : 'dominios'
+		dataIndex : 'dominioNomes'
 	}, {
+		header : 'FEATURES',
+		width : 170,
+		flex : 1,
+		dataIndex : 'featureNomes'
+	},  {
 		header : 'NOME',
 		width : 170,
 		flex : 1,

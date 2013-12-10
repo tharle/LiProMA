@@ -1,7 +1,7 @@
 package br.unioeste.liproma.model.entidade;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.Entity;
 import org.json.JSONException;
@@ -11,20 +11,34 @@ import org.json.JSONObject;
 public class Dominio implements IEntidade {
 
 	private Long id;
-
 	private String nome;
-
 	private String descricao;
+	private boolean selecionado;
+	private Set<AnaliseMercado> analiseMercados;
+	private Set<Produto> produtos;
+	private Set<Feature> features;
+	private Set<BacklogEscopo> backlogEscopos;
 
 	public Dominio() {
 		this.id = 0l;
 		this.nome = "";
 		this.descricao = "";
+		this.selecionado = false;
+		produtos = new HashSet<>();
+		features = new HashSet<>();
+		backlogEscopos = new HashSet<>();
+		analiseMercados = new HashSet<>();
 	}
 
-	public Dominio(String nome, String descricao) {
+	public Dominio(Long id, String nome, String descricao) {
+		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
+		this.selecionado = false;
+		produtos = new HashSet<>();
+		features = new HashSet<>();
+		analiseMercados = new HashSet<>();
+		backlogEscopos = new HashSet<>();
 	}
 
 	public Long getId() {
@@ -73,21 +87,34 @@ public class Dominio implements IEntidade {
 
 	@Override
 	public String toString() {
-		return "Beans.Produto[ id=" + id + " ]";
+		return "Beans.Dominio[ id=" + id + " ]";
 	}
 
-	@Override
-	public Map<String, String> toMap() {
-		HashMap<String, String> map = new HashMap<>();
-
-		map.put("id", String.valueOf(this.id));
-		map.put("nome", this.nome);
-		map.put("descricao", this.descricao);
-
-		return map;
+	public boolean isSelecionado() {
+		return selecionado;
 	}
 
-	public void processJsonObject(JSONObject jsonObj, boolean novo) {
+	public void setSelecionado(boolean selecionado) {
+		this.selecionado = selecionado;
+	}
+
+	public Set<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(Set<Produto> produtos) {
+		this.produtos = produtos;
+	}
+
+	public Set<AnaliseMercado> getAnaliseMercados() {
+		return analiseMercados;
+	}
+
+	public void setAnaliseMercados(Set<AnaliseMercado> analiseMercados) {
+		this.analiseMercados = analiseMercados;
+	}
+
+	public void fromJsonObject(JSONObject jsonObj, boolean novo) {
 		try {
 			this.id = novo ? 0l : jsonObj.getLong("id");
 			this.nome = jsonObj.getString("nome");
@@ -95,6 +122,36 @@ public class Dominio implements IEntidade {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public JSONObject toJsonObject() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("id", String.valueOf(this.id));
+			json.put("nome", this.nome);
+			json.put("descricao", this.descricao);
+			json.put("selecionado", this.selecionado);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	public Set<Feature> getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(Set<Feature> features) {
+		this.features = features;
+	}
+
+	public Set<BacklogEscopo> getBacklogEscopos() {
+		return backlogEscopos;
+	}
+
+	public void setBacklogEscopos(Set<BacklogEscopo> backlogEscopos) {
+		this.backlogEscopos = backlogEscopos;
 	}
 
 }

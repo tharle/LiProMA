@@ -3,15 +3,23 @@ Ext.define('Liproma.model.BacklogSprint', {
 	fields : [ {
 		name : 'id'
 	},{
-		name : 'descricaoEscopo'
+		name : 'descricao'
 	},{
-		name : 'featuresSelecionadas'
+		name : 'idBacklogEscopo'
 	}, {
-		name : 'responsaveis'
+		name : 'responsavelNomes'
 	}, {
-		name : 'statusTarefa'
-	} , {
-		name : 'tarefa'
+		name : 'responsavelValores'
+	},{
+		name : 'featureNomes'
+	}, {
+		name : 'featureValores'
+	}, {
+		name : 'dataInicio'
+	}, {
+		name : 'dataFim'
+	}, {
+		name : 'localReuniao'
 	}],
 	idProperty: 'id'
 });

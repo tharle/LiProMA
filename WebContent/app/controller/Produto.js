@@ -39,6 +39,8 @@ Ext.define('Liproma.controller.Produto', {
 	editarProduto : function(grid, record) {
 		var edit = Ext.create('Liproma.view.produto.Formulario').show();
 		if (record && record.getData) {
+			edit.atualizandoProdutoDominios(record.getData().id);
+			edit.atualizandoFeatureProdutos(record.getData().id);
 			edit.down('form').loadRecord(record);
 		}
 	},
@@ -58,8 +60,27 @@ Ext.define('Liproma.controller.Produto', {
 		var form = win.down('form');
 		var record = form.getRecord();
 		var values = form.getValues();
-
-
+		var novo = false;
+		//-- Dominio
+		var dominiosSelecionados = new Array();
+		var domckb = form.getChildByElement('ckbprodutodominio').down('checkboxgroup');
+		for ( var i = 0; i < domckb.items.length; i++) {
+			if (domckb.items.items[i].checked) {
+				dominiosSelecionados.push(domckb.items.items[i].inputValue);
+			}
+		}
+		values.dominioValores = dominiosSelecionados;
+		//---
+		//--Feature
+		var featureSelecionados = new Array();
+		var fetckb = form.getChildByElement('ckbfeatureproduto').down('checkboxgroup');
+		for ( var i = 0; i < fetckb.items.length; i++) {
+			if (fetckb.items.items[i].checked) {
+				featureSelecionados.push(fetckb.items.items[i].inputValue);
+			}
+		}
+		values.featureValores = featureSelecionados;
+		//---
 		if (values.id > 0) {
 			record.set(values);
 		} else {
@@ -72,9 +93,9 @@ Ext.define('Liproma.controller.Produto', {
 		win.close();
 		this.getProdutoStore().sync();
 
-//		if (novo) {// faz reload para atualizar
-//			this.getProdutoStore().load();
-//		}
+		if (novo) {// faz reload para atualizar
+			this.getProdutoStore().load();
+		}
 	},
 
 	deletarProduto : function(button) {

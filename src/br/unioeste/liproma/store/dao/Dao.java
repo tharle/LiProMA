@@ -15,7 +15,7 @@ public abstract class Dao {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public abstract void insert(IEntidade entidate) throws Exception;
+	public abstract IEntidade insert(IEntidade entidate) throws Exception;
 	
 	public abstract List<IEntidade> findAll() throws Exception;
 

@@ -19,15 +19,16 @@ public class ProdutoDao extends Dao {
 	}
 
 	@Override
-	public void insert(IEntidade entidate) throws Exception {
+	public IEntidade insert(IEntidade entidate) throws Exception {
 		Produto produto = (Produto) entidate;
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 
 		try {
 			tx = session.beginTransaction();
-			session.save(produto);
+			Produto result = (Produto) session.merge(produto);
 			tx.commit();
+			return result;
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -35,6 +36,7 @@ public class ProdutoDao extends Dao {
 		} finally {
 			session.close();
 		}
+		return null;
 	}
 
 	@Override
@@ -101,8 +103,7 @@ public class ProdutoDao extends Dao {
 		}
 	}
 
-	public List<IEntidade> findWhere(String campo, String text) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<IEntidade> findWhere(String campo, String text) throws Exception {
+		return getList("FROM Produto WHERE "+campo+" = "+text);
 	}
 }

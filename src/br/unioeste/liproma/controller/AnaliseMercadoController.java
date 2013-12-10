@@ -1,6 +1,7 @@
 package br.unioeste.liproma.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import br.unioeste.liproma.model.entidade.AnaliseMercado;
@@ -8,7 +9,9 @@ import br.unioeste.liproma.model.entidade.Dominio;
 import br.unioeste.liproma.model.entidade.DominioAnaliseMercado;
 import br.unioeste.liproma.model.entidade.IEntidade;
 import br.unioeste.liproma.store.dao.AnaliseMercadoDao;
+import br.unioeste.liproma.store.dao.SimpleDao;
 import br.unioeste.liproma.store.factory.AbstractDaoFactory;
+import br.unioeste.liproma.store.factory.DaoFactory;
 
 public class AnaliseMercadoController {
 
@@ -16,14 +19,64 @@ public class AnaliseMercadoController {
 
 	}
 
-	public void gravar(AnaliseMercado analiseMercado, boolean novo)
-			throws Exception {
+	public void gravar(AnaliseMercado amNovo, boolean novo) throws Exception {
 		AnaliseMercadoDao dao = AbstractDaoFactory.getDaoFactory()
 				.getAnaliseMercadoDao();
-		if (novo)
-			dao.insert(analiseMercado);
-		else
-			dao.update(analiseMercado);
+		// carregarAnaliseMercado(amNovo);
+		carregarDominios(amNovo);
+		if (novo) {
+			IEntidade entidade = dao.insert(amNovo);
+			amNovo.setId(entidade.getId());
+		} else {
+			dao.update(amNovo);
+		}
+		gravarDominioAnaliseMercado(amNovo, novo);
+
+	}
+
+	private void gravarDominioAnaliseMercado(AnaliseMercado amNovo, boolean novo)
+			throws Exception {
+		AnaliseMercadoDao dao = DaoFactory.getDaoFactory()
+				.getAnaliseMercadoDao();
+		ArrayList<Dominio> inserir = new ArrayList<>(amNovo.getDominios());
+		// DominioAnaliseMercadoDao damDao = AbstractDaoFactory.getDaoFactory()
+		// .getDominioAnaliseMercadoDao();
+		SimpleDao damDao = AbstractDaoFactory.getDaoFactory().getSimpleDao(
+				"DominioAnaliseMercado");
+		if (!novo) {
+			List<IEntidade> damAntigos = damDao.findWhere("id_analise_mercado",
+					String.valueOf(amNovo.getId()));
+			List<IEntidade> remover = new ArrayList<>(damAntigos);
+			for (Dominio dNovo : amNovo.getDominios()) {
+				for (IEntidade ent : damAntigos) {
+					DominioAnaliseMercado dam = (DominioAnaliseMercado) ent;
+					if (dNovo.getId() == dam.getDominio().getId()) {
+						inserir.remove(dNovo);
+						remover.remove(dam);
+					}
+				}
+			}
+
+			for (IEntidade ent : remover) {
+				damDao.delete(ent);
+			}
+		}
+
+		// gravar os novos
+		for (Dominio dNovo : inserir) {
+			damDao.insert(new DominioAnaliseMercado(null, amNovo, dNovo));
+		}
+	}
+
+	private void carregarDominios(AnaliseMercado am) throws Exception {
+		DominioController dc = new DominioController();
+		HashSet<Dominio> dominios = new HashSet<>();
+		for (Dominio d : am.getDominios()) {
+			d = dc.buscarDominiosPor("id", String.valueOf(d.getId())).get(0);
+			dominios.add(d);
+		}
+		am.setDominios(dominios);
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -35,6 +88,8 @@ public class AnaliseMercadoController {
 		ArrayList<AnaliseMercado> analiseMercados = new ArrayList<>();
 		AnaliseMercadoDao dao = AbstractDaoFactory.getDaoFactory()
 				.getAnaliseMercadoDao();
+		SimpleDao damDao = AbstractDaoFactory.getDaoFactory().getSimpleDao(
+				"DominioAnaliseMercado");
 		List<IEntidade> results;
 		if (text.trim().length() == 0) {
 			results = dao.findAll();
@@ -43,18 +98,17 @@ public class AnaliseMercadoController {
 		}
 
 		for (IEntidade e : results) {
+			
+			
 			AnaliseMercado am = (AnaliseMercado) e;
-			List<IEntidade> dams = AbstractDaoFactory.getDaoFactory()
-					.getDominioAnaliseMercadoDao()
-					.findWhere("idAnaliseMercado", String.valueOf(am.getId()));
-			List<Dominio> dominios = new ArrayList<>();
-//			//Adicionando dominios vinculados
-			for (IEntidade iEntidade : dams) {
-				DominioAnaliseMercado dam = (DominioAnaliseMercado) iEntidade;
-				List<Dominio> dResult = new DominioController().buscarDominiosPor("id", String.valueOf(dam.getIdDominio()));
-				dominios.addAll(dResult);
+			List<IEntidade> dams = damDao.findWhere("id_analise_mercado",
+					String.valueOf(e.getId()));
+			
+			for (IEntidade eDam : dams) {
+				DominioAnaliseMercado dam = (DominioAnaliseMercado) eDam;
+				am.getDominios().add(dam.getDominio());
 			}
-			am.setDominios(dominios);
+			
 			analiseMercados.add(am);
 		}
 

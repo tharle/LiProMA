@@ -1,5 +1,7 @@
 <?xml version="1.0"?>  
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping.dtd">  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">    
 <hibernate-mapping>  
     <class name="br.unioeste.liproma.model.entidade.Feature" table="feature">  
         <id name="id" column="id" type="long">  
@@ -8,8 +10,14 @@
         <property name="nome" column="nome" type="string"/>  
         <property name="descricao" column="descricao" type="string"/>
         <property name="bindingTime" column="binding_time" type="string"/> 
-        <property name="prioridade" column="prioridade" type="integer"/> 
-        <property name="idFeaturePai" column="id_feature_pai" type="long"/>
-        <property name="principal" column="principal" type="boolean"/>  
+        <property name="prioridade" column="prioridade" type="integer"/>
+        <property name="pontoVariacao" column="ponto_variacao" type="integer"/> 
+        <property name="principal" column="principal" type="boolean"/>
+        <property name="obrigatoria" column="obrigatoria" type="boolean"/> 
+        
+        <!-- Feature pai -->
+		<many-to-one name="featurePai"
+			class="br.unioeste.liproma.model.entidade.Feature" column="id_feature_pai"
+			cascade="refresh" not-null="false" lazy="false" />
     </class>  
 </hibernate-mapping> 

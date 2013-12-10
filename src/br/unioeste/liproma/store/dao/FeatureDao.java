@@ -18,15 +18,16 @@ public class FeatureDao extends Dao {
 	}
 
 	@Override
-	public void insert(IEntidade entidate) throws Exception {
+	public IEntidade insert(IEntidade entidate) throws Exception {
 		Feature feature = (Feature) entidate;
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 
 		try {
 			tx = session.beginTransaction();
-			session.save(feature);
+			Feature result = (Feature) session.merge(feature);
 			tx.commit();
+			return result;
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -34,6 +35,7 @@ public class FeatureDao extends Dao {
 		} finally {
 			session.close();
 		}
+		return null;
 	}
 
 	@Override

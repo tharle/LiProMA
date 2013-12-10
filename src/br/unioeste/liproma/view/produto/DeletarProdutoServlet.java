@@ -62,13 +62,12 @@ public class DeletarProdutoServlet extends HttpServlet {
 			Produto produto = new Produto();
 			org.json.JSONObject jsonObj = new org.json.JSONObject(linha);
 			
-			produto.processJsonObject(
+			produto.fromJsonObject(
 					(org.json.JSONObject) jsonObj.get("produtos"), false);
 			controlador.excluir(produto);
 
-			Gson gson = new Gson();
 			result.put("sucess", true);
-			out.println(gson.toJson(result));
+			out.println(result);
 		} catch (Exception e) {
 				result.put("sucess", false);
 			e.printStackTrace();

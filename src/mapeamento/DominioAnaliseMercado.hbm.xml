@@ -1,11 +1,17 @@
 <?xml version="1.0"?>  
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping.dtd">  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">   
 <hibernate-mapping>  
     <class name="br.unioeste.liproma.model.entidade.DominioAnaliseMercado" table="dominio_analise_mercado">  
         <id name="id" column="id" type="long">  
             <generator class="native"/>  
-        </id>  
-        <property name="idAnaliseMercado" column="id_analise_mercado" type="long"/>  
-        <property name="idDominio" column="id_dominio" type="long"/>  
+        </id>
+        
+        <many-to-one name="dominio" lazy="false" class="br.unioeste.liproma.model.entidade.Dominio" column="id_dominio"
+			cascade="refresh " not-null="true"  />
+
+		<many-to-one name="analiseMercado" lazy="false" class="br.unioeste.liproma.model.entidade.AnaliseMercado" column="id_analise_mercado"
+			cascade="refresh" not-null="true"  />
     </class>  
 </hibernate-mapping> 

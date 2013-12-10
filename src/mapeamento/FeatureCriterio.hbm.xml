@@ -1,0 +1,19 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">  
+<hibernate-mapping>
+	<class name="br.unioeste.liproma.model.entidade.FeatureCriterio"
+		table="feature_criterio">
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
+		<many-to-one name="feature" class="br.unioeste.liproma.model.entidade.Feature" column="id_feature"
+			cascade="refresh" not-null="true" lazy="false" />
+
+		<many-to-one name="criterio" class="br.unioeste.liproma.model.entidade.Criterio" column="id_criterio"
+			cascade="refresh" not-null="true" lazy="false"  />
+		<property name="comentario" column="comentario" type="string" />
+		<property name="grauImpacto" column="grau_impacto" type="integer" />
+	</class>
+</hibernate-mapping> 

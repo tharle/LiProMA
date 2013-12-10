@@ -5,6 +5,7 @@ import br.unioeste.liproma.store.dao.DominioAnaliseMercadoDao;
 import br.unioeste.liproma.store.dao.DominioDao;
 import br.unioeste.liproma.store.dao.FeatureDao;
 import br.unioeste.liproma.store.dao.ProdutoDao;
+import br.unioeste.liproma.store.dao.SimpleDao;
 
 
 public abstract class AbstractDaoFactory {
@@ -24,9 +25,10 @@ public abstract class AbstractDaoFactory {
         return null;
     }
 	
-	public abstract ProdutoDao getProdutoDao();
 	public abstract AnaliseMercadoDao getAnaliseMercadoDao();
 	public abstract DominioDao getDominioDao();
 	public abstract DominioAnaliseMercadoDao getDominioAnaliseMercadoDao();
 	public abstract FeatureDao getFeatureDao();
+	public abstract ProdutoDao getProdutoDao();
+	public abstract SimpleDao getSimpleDao(String classe);
 }

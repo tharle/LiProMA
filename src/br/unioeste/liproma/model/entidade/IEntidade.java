@@ -6,10 +6,8 @@ import org.json.JSONObject;
 
 public interface IEntidade {
 
-	public Map<String, String> toMap();
-
 	public Long getId();
 
-	void processJsonObject(JSONObject jsonObject, boolean novo);
-
+	public void fromJsonObject(JSONObject jsonObject, boolean novo);
+	public JSONObject toJsonObject();
 }

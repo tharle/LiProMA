@@ -1,0 +1,17 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">  
+<hibernate-mapping>  
+    <class name="br.unioeste.liproma.model.entidade.ProdutoDominio" table="produto_dominio">  
+        <id name="id" column="id" type="long">  
+            <generator class="native"/>  
+        </id>
+        
+        <many-to-one name="dominio" class="br.unioeste.liproma.model.entidade.Dominio" column="id_dominio"
+			cascade="refresh" not-null="true" lazy="false"  />
+
+		<many-to-one name="produto" class="br.unioeste.liproma.model.entidade.Produto" column="id_produto"
+			cascade="refresh" not-null="true" lazy="false"  />
+    </class>  
+</hibernate-mapping> 

@@ -1,38 +1,42 @@
 {"items": 
 [
 	{
-		"title": "Cadastros",
+		"title": "Linha de Produtos",
 		"iconCls": "icon-grid",
 		"id": "1",
 		"items": [
+		{
+				"text": "Dominio",
+				"menu_id": "1",
+				"id": "11",
+				"className": "dominiogrid"
+			},
 			{
 				"text": "Analise de Mercado",
 				"menu_id": "1",
-				"id": "11",
-				"className": "analisemercadogrid"
-			},
-			{
-				"text": "Mapa de Produto",
-				"menu_id": "1",
 				"id": "12",
-				"className": "produtogrid"
-			},
-			{
-				"text": "Dominio",
-				"menu_id": "1",
-				"id": "13",
-				"className": "dominiogrid"
+				"className": "analisemercadogrid"
 			},
 			{
 				"text": "Feature",
 				"menu_id": "1",
-				"id": "14",
+				"id": "13",
 				"className": "featuregrid"
 			},
 			{
 				"text": "Criterio de Potencial de Uso",
 				"menu_id": "1",
+				"id": "14",
+			},
+			{
+				"text": "Produto",
+				"menu_id": "1",
 				"id": "15",
+				"className": "produtogrid"
+			},{
+				"text": "Mapa de Produto",
+				"menu_id": "1",
+				"id": "16",
 			}
 		]
 	},
@@ -41,23 +45,37 @@
 		"iconCls": "computer",
 		"id": "2",
 		"items": [
-			{
-				"text": "Backlog de Escopo",
+		 	{
+				"text": "Responsavel",
 				"iconCls": "chart_bar",
 				"menu_id": "2",
 				"id": "21",
+				"className": "responsavelgrid"
+			},
+			{
+				"text": "Backlog de Escopo Listagem",
+				"iconCls": "chart_bar",
+				"menu_id": "2",
+				"id": "22",
 				"className": "backlogescopogrid"
+			},{
+				"text": "Backlog de Escopo Especifico",
+				"iconCls": "chart_bar",
+				"menu_id": "2",
+				"id": "23",
+				"className": "backlogescopoespecificotela"
 			}, {
 				"text": "Backlog de Sprint",
 				"iconCls": "chart_bar",
 				"menu_id": "2",
-				"id": "22",
-				"className": "backlogsprintgrid"
+				"id": "24",
+				"className": "backlogsprinttela"
 			}, {
-				"text": "Responsavel",
+				"text": "Tarefa",
 				"iconCls": "chart_bar",
 				"menu_id": "2",
-				"id": "23",
+				"id": "25",
+				"className": "tarefagrid"
 			}	
 		]
 	},

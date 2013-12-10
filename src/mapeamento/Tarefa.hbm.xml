@@ -1,0 +1,19 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">  
+<hibernate-mapping>  
+    <class name="br.unioeste.liproma.model.entidade.Tarefa" table="tarefa">  
+        <id name="id" column="id" type="long">  
+            <generator class="native"/>  
+        </id>  
+        <property name="status" column="status" type="integer"/>
+        <property name="descricao" column="descricao" type="string" /> 
+        
+        <!-- Backlog Sprint -->
+	<many-to-one name="backlogSprint"
+		class="br.unioeste.liproma.model.entidade.BacklogSprint"
+		column="id_backlog_sprint" cascade="refresh"
+		not-null="true" lazy="false" />
+    </class>  
+</hibernate-mapping> 
